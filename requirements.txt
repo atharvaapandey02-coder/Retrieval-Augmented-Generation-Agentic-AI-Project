@@ -1,0 +1,8 @@
+torch>=2.0.0
+torchvision>=0.15.0
+faiss-cpu>=1.7.4
+pillow>=10.0.0
+numpy>=1.24.0
+open-clip-torch>=2.24.0
+flask
+google-genai==0.3.0

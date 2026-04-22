@@ -1,0 +1,74 @@
+# ----------------------
+# Python cache & builds
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# ----------------------
+# IDE / Editor
+# ----------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ----------------------
+# OS files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# Logs & temp files
+# ----------------------
+*.log
+*.tmp
+
+# ----------------------
+# Environment variables
+# ----------------------
+.env
+
+# ----------------------
+# FAISS / Vector DB
+# ----------------------
+faiss.index
+*.index
+*.faiss
+
+# Metadata (optional: keep if needed)
+# metadata.json
+
+# ----------------------
+# Uploaded / generated files
+# ----------------------
+uploads/
+*.zip
+*.tar.gz
+
+# ----------------------
+# Static build (if generated)
+# ----------------------
+dist/
+build/
+
+# ----------------------
+# Images (optional)
+# ----------------------
+# Uncomment if these are generated, not required in repo
+# *.png
+# *.jpg
+# *.jpeg
+
+# ----------------------
+# Jupyter
+# ----------------------
+.ipynb_checkpoints/

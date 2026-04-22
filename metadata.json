@@ -1,0 +1,46 @@
+[
+  {
+    "person_id": "akshay",
+    "image_path": "static/enroll/akshay.jpg"
+  },
+  {
+    "person_id": "alia",
+    "image_path": "static/enroll/alia.jpg"
+  },
+  {
+    "person_id": "deepika",
+    "image_path": "static/enroll/deepika.jpg"
+  },
+  {
+    "person_id": "kohli",
+    "image_path": "static/enroll/kohli.jpg"
+  },
+  {
+    "person_id": "anirkhan",
+    "image_path": "static/enroll/anirkhan.jpg"
+  },
+  {
+    "person_id": "vaibhav",
+    "image_path": "static/enroll/vaibhav.jpg"
+  },
+  {
+    "person_id": "shraddha",
+    "image_path": "static/enroll/shraddha.jpg"
+  },
+  {
+    "person_id": "rohitsharma",
+    "image_path": "static/enroll/rohitsharma.jpg"
+  },
+  {
+    "person_id": "ranveer",
+    "image_path": "static/enroll/ranveer.jpg"
+  },
+  {
+    "person_id": "kartikaaryan",
+    "image_path": "static/enroll/kartikaaryan.jpg"
+  },
+  {
+    "person_id": "bachachan",
+    "image_path": "static/enroll/bachachan.jpg"
+  }
+]

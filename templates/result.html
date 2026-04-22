@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Recognition Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 30px 0;
+            box-sizing: border-box;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255,255,255,0.15);
+            padding: 40px;
+            border-radius: 15px;
+            width: 820px;
+            max-width: 95vw;
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        }
+        h2 { margin-bottom: 15px; font-size: 26px; }
+        h3 { margin: 18px 0 8px; font-size: 17px; opacity: 0.85; }
+        .match    { color: #00ff9d; font-weight: bold; font-size: 22px; }
+        .nomatch  { color: #ff5e5e; font-weight: bold; font-size: 22px; }
+        img {
+            width: 230px;
+            height: auto;
+            border-radius: 10px;
+            margin: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        }
+
+        /* ── RAG stages panel ─────────────────────────── */
+        .rag-stages {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 22px 0 8px;
+            flex-wrap: wrap;
+        }
+        .stage {
+            background: rgba(255,255,255,0.18);
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            min-width: 140px;
+        }
+        .stage-icon { font-size: 20px; }
+        .stage-label { font-weight: bold; letter-spacing: 0.5px; }
+        .stage-sub { opacity: 0.75; font-size: 11px; }
+
+        /* ── AI report card ───────────────────────────── */
+        .ai-report {
+            background: rgba(0, 0, 0, 0.25);
+            border-left: 4px solid #00ff9d;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin: 16px 0;
+            text-align: left;
+            font-size: 15px;
+            line-height: 1.65;
+        }
+        .ai-report-title {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.65;
+            margin-bottom: 8px;
+        }
+
+        /* ── Profile card ─────────────────────────────── */
+        .profile-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 16px 22px;
+            margin: 12px 0;
+            text-align: left;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 20px;
+        }
+        .profile-row { font-size: 13px; }
+        .profile-key { opacity: 0.65; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge {
+            display: inline-block;
+            background: #00ff9d;
+            color: #1a0050;
+            font-weight: bold;
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .badge.standard { background: #ffd966; }
+
+        hr { border: 1px solid rgba(255,255,255,0.3); margin: 20px 0; }
+
+        .btn {
+            background-color: #00ff9d;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            color: black;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .btn:hover { background-color: white; color: #6a11cb; }
+
+        .meta-row { font-size: 14px; margin: 4px 0; }
+        .meta-row b { opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Recognition Result</h2>
+
+        {% if result.match == "Matched" %}
+            <p class="match">Matched ✔</p>
+        {% else %}
+            <p class="nomatch">Not Matched ✖</p>
+        {% endif %}
+
+        <!-- RAG Pipeline Stages -->
+        <div class="rag-stages">
+            <div class="stage">
+                <span class="stage-icon"></span>
+                <span class="stage-label">Retrieval</span>
+                <span class="stage-sub">CLIP + FAISS</span>
+            </div>
+            <div class="stage">
+                <span class="stage-icon"></span>
+                <span class="stage-label">Augmentation</span>
+                <span class="stage-sub">Person profiles</span>
+            </div>
+            <div class="stage">
+                <span class="stage-icon"></span>
+                <span class="stage-label">Generation</span>
+                <span class="stage-sub">Google Gemini LLM</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- AI-Generated Report -->
+        {% if result.generated_response %}
+        <div class="ai-report">
+            <div class="ai-report-title">LLM-Generated Identification Report</div>
+            {{ result.generated_response }}
+        </div>
+        {% endif %}
+
+        <!-- Numeric metadata -->
+        {% if result.similarity %}
+        <p class="meta-row"><b>Similarity score:</b> {{ "%.4f"|format(result.similarity) }}</p>
+        {% endif %}
+
+        <!-- Profile card (augmented context) -->
+        {% if result.profile %}
+        <h3>Retrieved Profile</h3>
+        <div class="profile-card">
+            {% if result.profile.full_name %}
+            <div>
+                <div class="profile-key">Full name</div>
+                <div class="profile-row">{{ result.profile.full_name }}</div>
+            </div>
+            {% endif %}
+            {% if result.profile.profession %}
+            <div>
+                <div class="profile-key">Profession</div>
+                <div class="profile-row">{{ result.profile.profession }}</div>
+            </div>
+            {% endif %}
+            {% if result.profile.nationality %}
+            <div>
+                <div class="profile-key">Nationality</div>
+                <div class="profile-row">{{ result.profile.nationality }}</div>
+            </div>
+            {% endif %}
+            {% if result.profile.department %}
+            <div>
+                <div class="profile-key">Department</div>
+                <div class="profile-row">{{ result.profile.department }}</div>
+            </div>
+            {% endif %}
+            {% if result.profile.known_for %}
+            <div style="grid-column: 1 / -1;">
+                <div class="profile-key">Known for</div>
+                <div class="profile-row">{{ result.profile.known_for }}</div>
+            </div>
+            {% endif %}
+            {% if false %}
+            {% if result.profile.access_level %}
+            <div style="grid-column: 1 / -1;">
+                <div class="profile-key">Access level</div>
+                <div class="profile-row">
+                    <span class="badge {% if result.profile.access_level == 'Standard' %}standard{% endif %}">
+                        {{ result.profile.access_level }}
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <hr>
+
+        <!-- Images -->
+        <h3>Your Uploaded Image</h3>
+        <img src="/{{ uploaded_image }}">
+
+        {% if result.matched_image %}
+        <h3>Matched Reference Image</h3>
+        <img src="/{{ result.matched_image }}">
+        {% endif %}
+
+        <br>
+        <a href="/" class="btn">Try Another Image</a>
+    </div>
+</body>
+</html>
